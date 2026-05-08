@@ -10,7 +10,8 @@ const router = express.Router();
 router.get('/', auth, [
   query('page').optional().isInt({ min: 1 }),
   query('limit').optional().isInt({ min: 1, max: 100 }),
-  query('status').optional().isIn(['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'])
+  query('status').optional().isIn(['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded']),
+  query('search').optional().trim()
 ], async (req, res) => {
   try {
     const errors = validationResult(req);

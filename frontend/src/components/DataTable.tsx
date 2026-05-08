@@ -100,22 +100,27 @@ export default function DataTable<T>({
             >
               <ChevronLeftIcon className="h-4 w-4" />
             </button>
-            {Array.from({ length: Math.min(pagination.pages, 5) }, (_, i) => {
-              const p = i + 1
-              return (
-                <button
-                  key={p}
-                  onClick={() => onPageChange(p)}
-                  className={`w-8 h-8 rounded-lg text-sm font-medium ${
-                    p === pagination.page
-                      ? 'bg-primary-600 text-white'
-                      : 'text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {p}
-                </button>
-              )
-            })}
+            {(() => {
+              const windowSize = Math.min(pagination.pages, 5)
+              const half = Math.floor(windowSize / 2)
+              const start = Math.max(1, Math.min(pagination.page - half, pagination.pages - windowSize + 1))
+              return Array.from({ length: windowSize }, (_, i) => {
+                const p = start + i
+                return (
+                  <button
+                    key={p}
+                    onClick={() => onPageChange(p)}
+                    className={`w-8 h-8 rounded-lg text-sm font-medium ${
+                      p === pagination.page
+                        ? 'bg-primary-600 text-white'
+                        : 'text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                )
+              })
+            })()}
             <button
               onClick={() => onPageChange(pagination.page + 1)}
               disabled={pagination.page >= pagination.pages}
