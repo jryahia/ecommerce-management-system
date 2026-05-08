@@ -18,7 +18,7 @@ api.interceptors.response.use(
   error => {
     if (error.response?.status === 401 && window.location.pathname !== '/login') {
       localStorage.removeItem('token')
-      window.location.href = '/login'
+      window.location.href = '/ecommerce-management-system/login'
     }
     return Promise.reject(error)
   }
