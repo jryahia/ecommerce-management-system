@@ -6,16 +6,16 @@ services:
     container_name: ecom_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ecommerce_dev
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,14 +29,16 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    env_file:
+      - .env
     environment:
       NODE_ENV: production
       PORT: 5000
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: ecommerce_dev
-      DB_USER: postgres
-      DB_PASSWORD: password
+      DB_NAME: ${POSTGRES_DB:-ecommerce_dev}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
       JWT_SECRET: ${JWT_SECRET:-change-this-in-production-please}
       JWT_EXPIRES_IN: 7d
       FRONTEND_URL: http://localhost:3000
