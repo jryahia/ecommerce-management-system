@@ -34,7 +34,7 @@ function log(message) {
 
 // Helper to log errors
 function logError(message, error) {
-  console.error(`[${new Date().toISOString()}] ❌ ${message}`);
+  console.error(`[${new Date().toISOString()}]  ${message}`);
   if (error) {
     console.error(`   Error: ${error.message}`);
     if (error.code) console.error(`   Code: ${error.code}`);
@@ -45,7 +45,7 @@ async function seedDatabase() {
   const client = await pool.connect();
   
   try {
-    log('🌱 Starting database seeding...');
+    log(' Starting database seeding...');
     log(`   Database: ${config.database}@${config.host}:${config.port}`);
     console.log('');
 
@@ -70,7 +70,7 @@ async function seedDatabase() {
     `, ['admin@example.com', hashedPassword, 'Admin', 'User', 'admin', true]);
     
     const adminId = adminResult.rows[0].id;
-    log(`   ✓ Admin user created/updated: ${adminResult.rows[0].email}`);
+    log(`    Admin user created/updated: ${adminResult.rows[0].email}`);
 
     // ========================================
     // 2. Create Categories
@@ -97,7 +97,7 @@ async function seedDatabase() {
       
       categoryIds[category.name] = result.rows[0].id;
     }
-    log(`   ✓ ${categories.length} categories created/updated`);
+    log(`    ${categories.length} categories created/updated`);
 
     // ========================================
     // 3. Create Products
@@ -222,7 +222,7 @@ async function seedDatabase() {
 
       productIds.push(result.rows[0].id);
     }
-    log(`   ✓ ${products.length} products created/updated`);
+    log(`    ${products.length} products created/updated`);
 
     // ========================================
     // 4. Create Customers
@@ -252,7 +252,7 @@ async function seedDatabase() {
 
       customerIds.push(result.rows[0].id);
     }
-    log(`   ✓ ${customers.length} customers created/updated`);
+    log(`    ${customers.length} customers created/updated`);
 
     // ========================================
     // 5. Create Sample Orders
@@ -320,16 +320,16 @@ async function seedDatabase() {
 
         ordersCreated++;
       }
-      log(`   ✓ ${ordersCreated} orders created`);
+      log(`    ${ordersCreated} orders created`);
     } else {
-      log(`   ✓ Orders already exist (${orderCount}), skipping`);
+      log(`    Orders already exist (${orderCount}), skipping`);
     }
 
     await client.query('COMMIT');
 
     console.log('');
     log('═══════════════════════════════════════════════════════════');
-    log('  ✅ DATABASE SEEDING COMPLETE!');
+    log('   DATABASE SEEDING COMPLETE!');
     log('═══════════════════════════════════════════════════════════');
     console.log('');
     log('  Default Admin Login:');
@@ -348,16 +348,16 @@ async function seedDatabase() {
     
     if (error.code === 'ECONNREFUSED') {
       console.log('');
-      console.log('   💡 PostgreSQL is not running. Please start it first:');
+      console.log('    PostgreSQL is not running. Please start it first:');
       console.log('      - Windows: Start "PostgreSQL" service');
       console.log('      - macOS:   brew services start postgresql');
       console.log('      - Linux:   sudo systemctl start postgresql');
     } else if (error.code === '3D000') {
       console.log('');
-      console.log('   💡 Database does not exist. Run: npm run db:init');
+      console.log('    Database does not exist. Run: npm run db:init');
     } else if (error.code === '42P01') {
       console.log('');
-      console.log('   💡 Database tables do not exist. Run: npm run db:init');
+      console.log('    Database tables do not exist. Run: npm run db:init');
     }
     
     throw error;

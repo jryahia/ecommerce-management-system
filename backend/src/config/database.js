@@ -32,7 +32,7 @@ pool.on('connect', () => {
   if (!isConnected) {
     isConnected = true;
     connectionError = null;
-    logger.info(`✓ Connected to PostgreSQL database: ${config.database}@${config.host}:${config.port}`);
+    logger.info(` Connected to PostgreSQL database: ${config.database}@${config.host}:${config.port}`);
   }
 });
 
@@ -44,11 +44,11 @@ pool.on('error', (err) => {
   
   // Provide helpful error messages
   if (err.code === 'ECONNREFUSED') {
-    logger.error('💡 Make sure PostgreSQL is running on your machine');
+    logger.error(' Make sure PostgreSQL is running on your machine');
   } else if (err.code === '28P01') {
-    logger.error('💡 Check your database username and password in backend/.env');
+    logger.error(' Check your database username and password in backend/.env');
   } else if (err.code === '3D000') {
-    logger.error('💡 Database does not exist. Run: npm run db:init');
+    logger.error(' Database does not exist. Run: npm run db:init');
   }
 });
 
@@ -56,7 +56,7 @@ pool.on('error', (err) => {
 async function testConnection() {
   try {
     const result = await pool.query('SELECT NOW() as now, current_database() as db');
-    logger.info(`✓ Database connection verified: ${result.rows[0].db}`);
+    logger.info(` Database connection verified: ${result.rows[0].db}`);
     return true;
   } catch (err) {
     connectionError = err;

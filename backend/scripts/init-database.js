@@ -30,7 +30,7 @@ function log(message) {
 
 // Helper to log errors
 function logError(message, error) {
-  console.error(`[${new Date().toISOString()}] ❌ ${message}`);
+  console.error(`[${new Date().toISOString()}]  ${message}`);
   if (error) {
     console.error(`   Error: ${error.message}`);
     if (error.code) console.error(`   Code: ${error.code}`);
@@ -45,7 +45,7 @@ async function createDatabaseIfNotExists() {
 
   try {
     await client.connect();
-    log('✓ Connected to PostgreSQL server');
+    log(' Connected to PostgreSQL server');
 
     // Check if database exists
     const result = await client.query(
@@ -56,10 +56,10 @@ async function createDatabaseIfNotExists() {
     if (result.rows.length === 0) {
       // Create the database
       await client.query(`CREATE DATABASE "${dbName}"`);
-      log(`✓ Database "${dbName}" created successfully`);
+      log(` Database "${dbName}" created successfully`);
       return true; // Database was created
     } else {
-      log(`✓ Database "${dbName}" already exists`);
+      log(` Database "${dbName}" already exists`);
       return false; // Database already existed
     }
   } finally {
@@ -75,7 +75,7 @@ async function runInitScript() {
 
   try {
     await client.connect();
-    log(`✓ Connected to database "${dbName}"`);
+    log(` Connected to database "${dbName}"`);
 
     // Read the init.sql file
     const initSqlPath = path.join(__dirname, '..', '..', 'database', 'init.sql');
@@ -86,7 +86,7 @@ async function runInitScript() {
     }
 
     const initSql = fs.readFileSync(initSqlPath, 'utf8');
-    log('✓ Loaded init.sql schema');
+    log(' Loaded init.sql schema');
 
     // Split SQL into individual statements and execute them
     // This handles the case where some tables/extensions already exist
@@ -117,7 +117,7 @@ async function runInitScript() {
       }
     }
 
-    log(`✓ Schema initialization complete (${successCount} executed, ${skipCount} skipped)`);
+    log(` Schema initialization complete (${successCount} executed, ${skipCount} skipped)`);
 
   } finally {
     await client.end();
@@ -143,7 +143,7 @@ async function main() {
     
     console.log('');
     log('═══════════════════════════════════════════════════════════');
-    log('  ✅ DATABASE INITIALIZATION COMPLETE!');
+    log('   DATABASE INITIALIZATION COMPLETE!');
     log('═══════════════════════════════════════════════════════════');
     console.log('');
     log('Next steps:');
